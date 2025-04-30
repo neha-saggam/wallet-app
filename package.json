@@ -1,8 +1,13 @@
 {
   "name": "wallet-app",
+  "type": "module",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "git@github.com:neha-saggam/wallet-app.git",
   "author": "Neha Saggam <neha.saggam@shippit.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3"
+  }
 }
