@@ -1,5 +1,5 @@
 import readline from "readline";
-import { UserService } from "./UserService";
+import { UserService } from "./UserService.js";
 
 export class ProcessCommand {
   userService: UserService;
@@ -53,6 +53,16 @@ export class ProcessCommand {
       case "4":
         try {
           this.userService.checkBalance();
+        } catch (e) {
+          console.log(e);
+        } finally {
+          displayMenu();
+        }
+        break;
+
+      case "5":
+        try {
+          this.userService.checkMoneyReceivedAndSent();
         } catch (e) {
           console.log(e);
         } finally {

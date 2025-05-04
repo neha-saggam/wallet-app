@@ -15,6 +15,7 @@ function displayMenu() {
   console.log("2: Top up");
   console.log("3: Transfer money");
   console.log("4: Check Balance");
+  console.log("5: Check Money Received and Sent");
   console.log("exit: Quit the application");
 
   rl.question("\nEnter command: ", (cmd) => {

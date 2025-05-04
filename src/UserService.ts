@@ -1,5 +1,5 @@
-import { User } from "./models/User";
-import { Wallet } from "./models/Wallet";
+import { User } from "./models/User.js";
+import { Wallet } from "./models/Wallet.js";
 
 export class UserService {
   currentUser: User | null;
@@ -33,7 +33,8 @@ export class UserService {
       throw new Error(`Amount must be positive`);
     }
     const transferToUser = this.users.find(
-      (user) => user.username === username && username !== this.currentUser!.username
+      (user) =>
+        user.username === username && username !== this.currentUser!.username
     );
     if (!transferToUser) {
       throw new Error(`No such user: ${username}`);
@@ -51,5 +52,12 @@ export class UserService {
       return;
     }
     console.log("Balance: ", this.currentUser.wallet.balance);
+  }
+
+  checkMoneyReceivedAndSent() {
+    if (!this.currentUser) {
+      throw new Error(`Please register first`);
+    }
+    console.log(this.currentUser.wallet.history);
   }
 }

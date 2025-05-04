@@ -52,4 +52,26 @@ describe("UserService", () => {
       expect(() => service.transferTo("nonexistent", 50)).toThrow("No such user: nonexistent");
     });
   })
+
+  describe("checkMoneyReceivedAndSent", () => {
+    it("should throw an error if no user is registered", () => {
+      expect(() => service.checkMoneyReceivedAndSent()).toThrow(
+        "Please register first"
+      );
+    });
+
+    it("should log the wallet history of the current user", () => {
+      service.registerUser("alice");
+      service.topUpWallet(200);
+      service.currentUser = service.users.find(
+        (u: User) => u.username === "alice"
+      )!;
+
+      const consoleSpy = jest.spyOn(console, "log");
+      service.checkMoneyReceivedAndSent();
+      expect(consoleSpy).toHaveBeenCalledWith(service.currentUser.wallet.history);
+      consoleSpy.mockRestore();
+    });
+  });
+
 });
