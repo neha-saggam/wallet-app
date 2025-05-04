@@ -4,7 +4,10 @@ import { Wallet } from "./Wallet.js";
 
 export class ProcessCommand {
   currentUser: User | null;
+  users: User[];
+
   constructor() {
+    this.users = [];
     this.currentUser = null;
   }
 
@@ -14,13 +17,14 @@ export class ProcessCommand {
         rl.question("\nEnter username: ", (username: string) => {
           const user = new User(username);
           this.currentUser = user;
+          this.users.push(user);
           console.log(`User "${username}" registered.`);
           displayMenu();
         });
         break;
 
       case "2":
-        rl.question("\nEnter money to top up: ", (amount) => {
+        rl.question("\nEnter top up amount: ", (amount) => {
           if (!this.currentUser) {
             console.log(`Please register first`);
             displayMenu();
@@ -33,6 +37,30 @@ export class ProcessCommand {
         break;
 
       case "3":
+        rl.question(
+          "\nEnter username and amount to transfer to: ",
+          (usernameAndAmount) => {
+            const [username, amount] = usernameAndAmount.split(" ");
+            const transferToUser = this.users.find((user) => user.username === username);
+            if (!this.currentUser) {
+              console.log(`Please register first`);
+              displayMenu();
+              return;
+            }
+            if (!transferToUser) {
+                console.log(`No such user: ${transferToUser}`);
+                displayMenu();
+                return;
+              }
+            const wallet = this.currentUser.wallet;
+            const walletTo = transferToUser.wallet;
+            wallet.transferTo(walletTo, Number(amount));
+            displayMenu();
+          }
+        );
+        break;
+
+      case "4":
         if (!this.currentUser) {
           console.log(`Please register first`);
           displayMenu();
