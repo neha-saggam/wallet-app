@@ -1,14 +1,21 @@
+import { Wallet } from "../src/Wallet.js";
+
 export class User {
-  users: string[];
-  constructor() {
-    this.users = [];
+    static idCounter = 1;
+    id: number;
+    username: string;
+    wallet: Wallet;
+  
+    constructor(username: string) {
+      this.id = User.idCounter++;
+      this.username = username;
+      this.wallet = new Wallet(this.id);
+    }
+  
+    assignWallet(wallet: Wallet) {
+      if (wallet.userId !== this.id) {
+        throw new Error("Wallet does not belong to this user");
+      }
+      this.wallet = wallet;
+    }
   }
-
-  createUser(username: string) {
-    this.users.push(username);
-  }
-
-  getUsers() {
-    return this.users;
-  }
-}

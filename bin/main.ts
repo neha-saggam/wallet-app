@@ -12,7 +12,8 @@ const commandProcessor = new ProcessCommand();
 function displayMenu() {
   console.log("\nMAIN MENU:");
   console.log("1: Register a user");
-  console.log("2: Show Users");
+  console.log("2: Top up");
+  console.log("3: Check Balance");
   console.log("exit: Quit the application");
 
   rl.question("\nEnter command: ", (cmd) => {

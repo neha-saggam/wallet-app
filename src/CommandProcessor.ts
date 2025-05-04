@@ -1,26 +1,44 @@
 import readline from "readline";
 import { User } from "../src/User.js";
+import { Wallet } from "./Wallet.js";
 
 export class ProcessCommand {
-  user: User;
+  currentUser: User | null;
   constructor() {
-    this.user = new User();
+    this.currentUser = null;
   }
 
   handle(command: string, displayMenu: () => void, rl: readline.Interface) {
     switch (command.toLowerCase()) {
       case "1":
         rl.question("\nEnter username: ", (username: string) => {
-          this.user.createUser(username);
+          const user = new User(username);
+          this.currentUser = user;
           console.log(`User "${username}" registered.`);
           displayMenu();
         });
         break;
 
       case "2":
-        const users = this.user.getUsers();
-        console.log("Users:");
-        console.log(users.length ? users : "No users found.");
+        rl.question("\nEnter money to top up: ", (amount) => {
+          if (!this.currentUser) {
+            console.log(`Please register first`);
+            displayMenu();
+            return;
+          }
+          const wallet: Wallet = this.currentUser.wallet;
+          wallet.topUp(Number(amount));
+          displayMenu();
+        });
+        break;
+
+      case "3":
+        if (!this.currentUser) {
+          console.log(`Please register first`);
+          displayMenu();
+          return;
+        }
+        console.log("Balance: ", this.currentUser.wallet.balance);
         displayMenu();
         break;
 
