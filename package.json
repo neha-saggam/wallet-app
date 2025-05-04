@@ -16,9 +16,13 @@
   "scripts": {
     "build": "tsc",
     "start": "npm run build && node dist/bin/main.js",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+     "test": "jest"
   },
   "devDependencies": {
-    "@types/node": "^22.15.3"
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.15.3",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.3.2"
   }
 }

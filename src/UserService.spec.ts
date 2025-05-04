@@ -1,0 +1,55 @@
+import { UserService } from "./UserService";
+import { User } from "./models/User";
+import { Wallet } from "./models/Wallet";
+
+describe("UserService", () => {
+  let service: UserService;
+
+  beforeEach(() => {
+    service = new UserService();
+  });
+
+  describe("registerUser", () => {
+    it("registers a user and sets currentUser", () => {
+      service.registerUser("alice");
+      expect(service.currentUser?.username).toBe("alice");
+      expect(service.users.length).toBe(1);
+    });
+  })
+
+  describe("topUpWallet", () => {
+    it("tops up wallet correctly", () => {
+      service.registerUser("bob");
+      service.topUpWallet(100);
+      expect(service.currentUser?.wallet.balance).toBe(100);
+    });
+  
+    it("throws error when no user is registered on top up", () => {
+      expect(() => service.topUpWallet(100)).toThrow("Please register first");
+    });
+  
+  })
+
+  describe("transferTo", () => {
+    it("transfers money between users", () => {
+      service.registerUser("alice");
+      service.topUpWallet(200);
+  
+      service.registerUser("bob");
+  
+      service.currentUser = service.users.find((u: User) => u.username === "alice")!;
+      service.transferTo("bob", 50);
+  
+      const alice = service.users.find((u: User) => u.username === "alice")!;
+      const bob = service.users.find((u: User) => u.username === "bob")!;
+  
+      expect(alice.wallet.balance).toBe(150);
+      expect(bob.wallet.balance).toBe(50);
+    });
+  
+    it("throws error on transfer to non-existing user", () => {
+      service.registerUser("alice");
+      expect(() => service.transferTo("nonexistent", 50)).toThrow("No such user: nonexistent");
+    });
+  })
+});

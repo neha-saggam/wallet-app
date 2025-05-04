@@ -1,4 +1,4 @@
-import { Wallet } from "../src/Wallet.js";
+import { Wallet } from "./Wallet";
 
 export class User {
     static idCounter = 1;
