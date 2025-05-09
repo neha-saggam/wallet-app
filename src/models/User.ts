@@ -2,9 +2,9 @@ import { Wallet } from "./Wallet.js";
 
 export class User {
     static idCounter = 1;
-    id: number;
-    username: string;
-    wallet: Wallet;
+    private id: number;
+    private username: string;
+    private wallet: Wallet;
   
     constructor(username: string) {
       this.id = User.idCounter++;
@@ -13,9 +13,17 @@ export class User {
     }
   
     assignWallet(wallet: Wallet) {
-      if (wallet.userId !== this.id) {
+      if (wallet.getUserId() !== this.id) {
         throw new Error("Wallet does not belong to this user");
       }
       this.wallet = wallet;
+    }
+
+    getWallet() {
+      return this.wallet;
+    }
+
+    getUsername() {
+      return this.username;
     }
   }

@@ -21,7 +21,7 @@ export class UserService {
     if (!this.currentUser) {
       throw new Error(`Please register first`);
     }
-    const wallet: Wallet = this.currentUser.wallet;
+    const wallet: Wallet = this.currentUser.getWallet();
     wallet.topUp(Number(amount));
   }
 
@@ -34,14 +34,14 @@ export class UserService {
     }
     const transferToUser = this.users.find(
       (user) =>
-        user.username === username && username !== this.currentUser!.username
+        user.getUsername() === username && username !== this.currentUser!.getUsername()
     );
     if (!transferToUser) {
       throw new Error(`No such user: ${username}`);
     }
 
-    const wallet = this.currentUser.wallet;
-    const walletTo = transferToUser.wallet;
+    const wallet = this.currentUser.getWallet();
+    const walletTo = transferToUser.getWallet();
     wallet.debit(Number(amount));
     walletTo.topUp(amount);
   }
@@ -51,13 +51,13 @@ export class UserService {
       console.log(`Please register first`);
       return;
     }
-    console.log("Balance: ", this.currentUser.wallet.balance);
+    console.log("Balance: ", this.currentUser.getWallet().getBalance());
   }
 
   checkMoneyReceivedAndSent() {
     if (!this.currentUser) {
       throw new Error(`Please register first`);
     }
-    console.log(this.currentUser.wallet.history);
+    console.log(this.currentUser.getWallet().getHistory());
   }
 }

@@ -12,7 +12,7 @@ describe("UserService", () => {
   describe("registerUser", () => {
     it("registers a user and sets currentUser", () => {
       service.registerUser("alice");
-      expect(service.currentUser?.username).toBe("alice");
+      expect(service.currentUser?.getUsername()).toBe("alice");
       expect(service.users.length).toBe(1);
     });
   })
@@ -21,7 +21,7 @@ describe("UserService", () => {
     it("tops up wallet correctly", () => {
       service.registerUser("bob");
       service.topUpWallet(100);
-      expect(service.currentUser?.wallet.balance).toBe(100);
+      expect(service.currentUser?.getWallet().getBalance()).toBe(100);
     });
   
     it("throws error when no user is registered on top up", () => {
@@ -37,14 +37,14 @@ describe("UserService", () => {
   
       service.registerUser("bob");
   
-      service.currentUser = service.users.find((u: User) => u.username === "alice")!;
+      service.currentUser = service.users.find((u: User) => u.getUsername() === "alice")!;
       service.transferTo("bob", 50);
   
-      const alice = service.users.find((u: User) => u.username === "alice")!;
-      const bob = service.users.find((u: User) => u.username === "bob")!;
+      const alice = service.users.find((u: User) => u.getUsername() === "alice")!;
+      const bob = service.users.find((u: User) => u.getUsername() === "bob")!;
   
-      expect(alice.wallet.balance).toBe(150);
-      expect(bob.wallet.balance).toBe(50);
+      expect(alice.getWallet().getBalance()).toBe(150);
+      expect(bob.getWallet().getBalance()).toBe(50);
     });
   
     it("throws error on transfer to non-existing user", () => {
@@ -64,12 +64,12 @@ describe("UserService", () => {
       service.registerUser("alice");
       service.topUpWallet(200);
       service.currentUser = service.users.find(
-        (u: User) => u.username === "alice"
+        (u: User) => u.getUsername() === "alice"
       )!;
 
       const consoleSpy = jest.spyOn(console, "log");
       service.checkMoneyReceivedAndSent();
-      expect(consoleSpy).toHaveBeenCalledWith(service.currentUser.wallet.history);
+      expect(consoleSpy).toHaveBeenCalledWith(service.currentUser.getWallet().getHistory());
       consoleSpy.mockRestore();
     });
   });

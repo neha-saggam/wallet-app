@@ -3,10 +3,10 @@ import { TransactionHistory } from "./TransactionHistory.js";
 
 export class Wallet {
     static idCounter = 1;
-    id: number;
-    userId: number;
-    balance: number;
-    history: TransactionHistory;
+    private id: number;
+    private userId: number;
+    private balance: number;
+    private history: TransactionHistory;
   
     constructor(userId: number) {
       this.id = Wallet.idCounter++;
@@ -27,6 +27,18 @@ export class Wallet {
       }
       this.balance -= amount;
       this.history.addTransaction(new Transaction(amount, "debit"));
+    }
+
+    getUserId() {
+      return this.userId;
+    }
+
+    getBalance() {
+      return this.balance;
+    }
+
+    getHistory() {
+      return this.history;
     }
   }
   
